@@ -1,6 +1,9 @@
 <script>
   const l = (value) => console.log(value);
+  $: l(score);
+  $: l(isDeuce);
 
+  let isDeuce = false;
   $: score = {
     p1: {
       s1: 0,
@@ -17,17 +20,48 @@
   };
 
   const scoreGame = (player) => {
-    console.log(player);
-    if (score.p1.pt <= 40 && score.p2.pt <= 40) {
-      if (player.pt === 0) {
-        player.pt = 15;
-      } else if (player.pt === 15) {
-        player.pt = 30;
+    if (score.p1.pt === 40 && score.p2.pt === 40) {
+      isDeuce = true;
+    }
+
+    if (score.p1.pt === "Ad" || score.p2.pt === "Ad") {
+      if (player.pt === "Ad") {
+        player.s1 = +player.s1 + 1;
+        resetPoints();
+        score = score;
       } else {
-        player.pt = 40;
+        score.p1.pt = 40;
+        score.p2.pt = 40;
+      }
+      return;
+    }
+
+    if (!isDeuce) {
+      if (score.p1.pt <= 40 && score.p2.pt <= 40) {
+        if (player.pt === 0) {
+          player.pt = 15;
+        } else if (player.pt === 15) {
+          player.pt = 30;
+        } else if (player.pt === 30) {
+          player.pt = 40;
+        } else {
+          player.s1 = +player.s1 + 1;
+          resetPoints();
+        }
       }
     }
+
+    if (isDeuce) {
+      player.pt = "Ad";
+      isDeuce = false;
+    }
+
     score = score;
+  };
+
+  const resetPoints = () => {
+    score.p1.pt = 0;
+    score.p2.pt = 0;
   };
 </script>
 
