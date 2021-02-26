@@ -3,7 +3,8 @@
   $: l(score);
   $: l(isDeuce);
 
-  let isDeuce = false;
+  let isDeuce;
+
   $: score = {
     p1: {
       s1: 0,
@@ -19,11 +20,11 @@
     },
   };
 
-  const scoreGame = (player) => {
-    if (score.p1.pt === 40 && score.p2.pt === 40) {
-      isDeuce = true;
-    }
+  $: score.p1.pt === 40 && score.p2.pt === 40
+    ? (isDeuce = true)
+    : (isDeuce = false);
 
+  const scoreGame = (player) => {
     if (score.p1.pt === "Ad" || score.p2.pt === "Ad") {
       if (player.pt === "Ad") {
         player.s1 = +player.s1 + 1;
