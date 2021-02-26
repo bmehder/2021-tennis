@@ -50,9 +50,8 @@
           resetPoints();
         }
       }
-    }
-
-    if (isDeuce) {
+    } else {
+      // it's deuce
       player.pt = "Ad";
       isDeuce = false;
     }
