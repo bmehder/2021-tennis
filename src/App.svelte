@@ -1,7 +1,7 @@
 <script>
   const l = (value) => console.log(value);
 
-  const score = {
+  $: score = {
     p1: {
       s1: 0,
       s2: 0,
@@ -14,6 +14,20 @@
       s3: 0,
       pt: 0,
     },
+  };
+
+  const scoreGame = (player) => {
+    console.log(player);
+    if (score.p1.pt <= 40 && score.p2.pt <= 40) {
+      if (player.pt === 0) {
+        player.pt = 15;
+      } else if (player.pt === 15) {
+        player.pt = 30;
+      } else {
+        player.pt = 40;
+      }
+    }
+    score = score;
   };
 </script>
 
@@ -31,8 +45,8 @@
     <input bind:value={score.p2.pt} />
   </article>
   <div>
-    <button>Player 1</button>
-    <button>Player 2</button>
+    <button on:click={() => scoreGame(score.p1)}>Player 1</button>
+    <button on:click={() => scoreGame(score.p2)}>Player 2</button>
   </div>
 </section>
 
@@ -48,6 +62,7 @@
   section div {
     display: flex;
     margin: 2em auto;
+    gap: 1em;
   }
   article {
     display: grid;
