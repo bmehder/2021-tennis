@@ -1,19 +1,17 @@
 <script>
   const l = (value) => console.log(value);
-  // $: l(score);
-  // $: l(isDeuce);
   $: l(isTiebreak);
 
   $: score = {
     p1: {
-      s1: 0,
+      s1: 5,
       s2: 0,
       s3: 0,
       pt: 0,
       tb: 0,
     },
     p2: {
-      s1: 0,
+      s1: 5,
       s2: 0,
       s3: 0,
       pt: 0,
@@ -64,10 +62,8 @@
         player.pt = "Ad";
         isDeuce = false;
       }
-
       score = score;
     } else {
-      isTiebreak = true;
       scoreTiebreak(player);
     }
   };
@@ -79,7 +75,15 @@
 
   const scoreTiebreak = (player) => {
     if (isTiebreak) {
-      alert("Tiebreak");
+      player.tb += 1;
+      if (score.p1.tb >= 7 && score.p2.tb < score.p1.tb) {
+        player.s1 += 1;
+        isTiebreak = false;
+      } else if (score.p1.tb > 6 || score.p2.tb > 6) {
+        player.s1 += 1;
+        isTiebreak = false;
+      }
+      score = score;
     }
   };
 </script>
