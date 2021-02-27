@@ -2,6 +2,11 @@
   const l = (value) => console.log(value);
   $: l(isTiebreak);
 
+  // The sets will need to be an array
+  // in order to increment to the next
+  // array index when a player wins a set.
+
+  // Keep track of the current set with a var.
   $: score = {
     p1: {
       s1: 5,
@@ -21,6 +26,8 @@
 
   let isDeuce;
   let isTiebreak;
+
+  let currentSet;
 
   $: score.p1.pt === 40 && score.p2.pt === 40
     ? (isDeuce = true)
