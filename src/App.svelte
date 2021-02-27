@@ -1,9 +1,8 @@
 <script>
   const l = (value) => console.log(value);
-  $: l(score);
-  $: l(isDeuce);
-
-  let isDeuce;
+  // $: l(score);
+  // $: l(isDeuce);
+  $: l(isTiebreak);
 
   $: score = {
     p1: {
@@ -11,62 +10,87 @@
       s2: 0,
       s3: 0,
       pt: 0,
+      tb: 0,
     },
     p2: {
       s1: 0,
       s2: 0,
       s3: 0,
       pt: 0,
+      tb: 0,
     },
   };
+
+  let isDeuce;
+  let isTiebreak;
 
   $: score.p1.pt === 40 && score.p2.pt === 40
     ? (isDeuce = true)
     : (isDeuce = false);
 
-  const scoreGame = (player) => {
-    if (score.p1.pt === "Ad" || score.p2.pt === "Ad") {
-      if (player.pt === "Ad") {
-        player.s1 = +player.s1 + 1;
-        resetPoints();
-        score = score;
-      } else {
-        score.p1.pt = 40;
-        score.p2.pt = 40;
-      }
-      return;
-    }
+  $: score.p1.s1 === 6 && score.p2.s1 === 6
+    ? (isTiebreak = true)
+    : (isTiebreak = false);
 
-    if (!isDeuce) {
-      if (score.p1.pt <= 40 && score.p2.pt <= 40) {
-        if (player.pt === 0) {
-          player.pt = 15;
-        } else if (player.pt === 15) {
-          player.pt = 30;
-        } else if (player.pt === 30) {
-          player.pt = 40;
-        } else {
+  const scoreGame = (player) => {
+    if (!isTiebreak) {
+      if (score.p1.pt === "Ad" || score.p2.pt === "Ad") {
+        if (player.pt === "Ad") {
           player.s1 = +player.s1 + 1;
           resetPoints();
+          score = score;
+        } else {
+          score.p1.pt = 40;
+          score.p2.pt = 40;
         }
+        return;
       }
-    } else {
-      // it's deuce
-      player.pt = "Ad";
-      isDeuce = false;
-    }
 
-    score = score;
+      if (!isDeuce) {
+        if (score.p1.pt <= 40 && score.p2.pt <= 40) {
+          if (player.pt === 0) {
+            player.pt = 15;
+          } else if (player.pt === 15) {
+            player.pt = 30;
+          } else if (player.pt === 30) {
+            player.pt = 40;
+          } else {
+            player.s1 = +player.s1 + 1;
+            resetPoints();
+          }
+        }
+      } else {
+        // it's deuce
+        player.pt = "Ad";
+        isDeuce = false;
+      }
+
+      score = score;
+    } else {
+      isTiebreak = true;
+      scoreTiebreak(player);
+    }
   };
 
   const resetPoints = () => {
     score.p1.pt = 0;
     score.p2.pt = 0;
   };
+
+  const scoreTiebreak = (player) => {
+    if (isTiebreak) {
+      alert("Tiebreak");
+    }
+  };
 </script>
 
 <section>
   <article>
+    <span />
+    <span>1</span>
+    <span>2</span>
+    <span>3</span>
+    <span>Point</span>
     <input value="Player 1" />
     <input bind:value={score.p1.s1} />
     <input bind:value={score.p1.s2} />
@@ -78,10 +102,15 @@
     <input bind:value={score.p2.s3} />
     <input bind:value={score.p2.pt} />
   </article>
+
   <div>
     <button on:click={() => scoreGame(score.p1)}>Player 1</button>
     <button on:click={() => scoreGame(score.p2)}>Player 2</button>
   </div>
+
+  {#if score.p1.tb > 0 || score.p2.tb > 0}
+    <aside>{score.p1.tb} : {score.p2.tb}</aside>
+  {/if}
 </section>
 
 <style>
@@ -101,5 +130,15 @@
   article {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
+  }
+  input {
+    width: 80px;
+    margin: 0;
+    text-align: center;
+  }
+  span {
+    padding-bottom: 0.25em;
+    text-align: center;
+    font-weight: bold;
   }
 </style>
