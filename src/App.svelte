@@ -7,6 +7,22 @@
   // array index when a player wins a set.
 
   // Keep track of the current set with a var.
+  //
+  // $: score = {
+  //   p1: {
+  //     name: "Roger",
+  //     sets: [5, 0, 0],
+  //     pt: 0,
+  //     tb: 0,
+  //   },
+  //   p2: {
+  //     name: "Rafa"
+  //     sets: [5, 0, 0],
+  //     pt: 0,
+  //     tb: 0,
+  //   },
+  // };
+
   $: score = {
     p1: {
       s1: 5,
@@ -33,6 +49,7 @@
     ? (isDeuce = true)
     : (isDeuce = false);
 
+  // $: score.p1.set[currentSet] === 6 && score.p2.set[currentSet] === 6
   $: score.p1.s1 === 6 && score.p2.s1 === 6
     ? (isTiebreak = true)
     : (isTiebreak = false);
