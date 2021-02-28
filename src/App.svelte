@@ -1,6 +1,8 @@
 <script>
-  const l = (value) => console.log(value);
-  // $: l(score);
+  let isMatch = true;
+  let isDeuce;
+  let isTiebreak;
+  let setNum = 0;
 
   $: score = {
     p1: {
@@ -17,11 +19,6 @@
     },
   };
 
-  let isMatch = true;
-  let isDeuce;
-  let isTiebreak;
-  let setNum = 0;
-
   // isDeuce
   $: score.p1.pt === 40 && score.p2.pt === 40
     ? (isDeuce = true)
@@ -33,6 +30,7 @@
     : (isTiebreak = false);
 
   // is the set over? If so, increment the setNum var
+  // and disable the buttons when the match has ended
   $: if (
     (score.p1.sets[setNum] >= 6 &&
       score.p1.sets[setNum] - score.p2.sets[setNum] >= 2) ||
@@ -112,18 +110,18 @@
 
     <div>
       <input bind:value={score.p1.name} />
-      <input class="border-left" bind:value={score.p1.sets[0]} />
-      <input class="border-left" bind:value={score.p1.sets[1]} />
-      <input class="border-left" bind:value={score.p1.sets[2]} />
-      <input class="border-left" bind:value={score.p1.pt} />
+      <input bind:value={score.p1.sets[0]} />
+      <input bind:value={score.p1.sets[1]} />
+      <input bind:value={score.p1.sets[2]} />
+      <input bind:value={score.p1.pt} />
     </div>
 
     <div>
       <input bind:value={score.p2.name} />
-      <input class="border-left" bind:value={score.p2.sets[0]} />
-      <input class="border-left" bind:value={score.p2.sets[1]} />
-      <input class="border-left" bind:value={score.p2.sets[2]} />
-      <input class="border-left" bind:value={score.p2.pt} />
+      <input bind:value={score.p2.sets[0]} />
+      <input bind:value={score.p2.sets[1]} />
+      <input bind:value={score.p2.sets[2]} />
+      <input bind:value={score.p2.pt} />
     </div>
   </article>
 
@@ -162,6 +160,7 @@
   article div {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
+    background-color: white;
   }
   article div:nth-child(1) {
     padding: 1em 0;
@@ -169,10 +168,7 @@
     color: white;
   }
   article div:nth-child(2) input {
-    background-color: #eee;
-  }
-  article div:nth-child(3) input {
-    background-color: #e5e5e5;
+    border-bottom: 1px solid #ddd;
   }
   input {
     width: 80px;
@@ -181,10 +177,12 @@
     text-align: center;
     border: none;
     border-radius: 0;
+    border-left: 1px solid #ddd;
   }
   div input:first-child {
     text-align: left;
     padding-left: 1em;
+    border-left: none;
   }
   span {
     text-align: center;
@@ -195,8 +193,5 @@
     padding: 1em 2em;
     background-color: dodgerblue;
     color: white;
-  }
-  .border-left {
-    border-left: 1px solid #ccc;
   }
 </style>
