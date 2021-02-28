@@ -81,7 +81,6 @@
     ) {
       player.sets[setNum] = +player.sets[setNum] + 1;
       setNum += 1;
-      // isTiebreak = false;
       resetPoints();
     }
   };
