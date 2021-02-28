@@ -21,14 +21,17 @@
   let isTiebreak;
   let setNum = 0;
 
+  // isDeuce
   $: score.p1.pt === 40 && score.p2.pt === 40
     ? (isDeuce = true)
     : (isDeuce = false);
 
+  // isTiebreak
   $: score.p1.sets[setNum] === 6 && score.p2.sets[setNum] === 6
     ? (isTiebreak = true)
     : (isTiebreak = false);
 
+  // is the set over? If so, increment the setNum var
   $: if (
     (score.p1.sets[setNum] >= 6 &&
       score.p1.sets[setNum] - score.p2.sets[setNum] >= 2) ||
@@ -36,10 +39,7 @@
       score.p2.sets[setNum] - score.p1.sets[setNum] >= 2)
   ) {
     setNum += 1;
-  }
-
-  $: if (setNum === 3) {
-    alert("Match Over!");
+    setNum === 3 && alert("Match Over!");
   }
 
   const handleBtnClick = (player) => {
@@ -64,15 +64,15 @@
     } else if (player.pt === 30) {
       player.pt = 40;
     } else {
-      resetPoints();
       player.sets[setNum] = +player.sets[setNum] + 1;
+      resetPoints();
     }
   };
 
   const scoreAdPoint = (player) => {
     if (player.pt === "Ad") {
-      resetPoints();
       player.sets[setNum] = +player.sets[setNum] + 1;
+      resetPoints();
     } else {
       score.p1.pt = 40;
       score.p2.pt = 40;
