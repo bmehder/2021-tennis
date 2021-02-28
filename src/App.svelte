@@ -5,13 +5,13 @@
   $: score = {
     p1: {
       name: "Roger",
-      sets: [0, 0, 0],
+      sets: [6, 4, 5],
       pt: 0,
       tb: 0,
     },
     p2: {
       name: "Rafa",
-      sets: [0, 0, 0],
+      sets: [4, 6, 5],
       pt: 0,
       tb: 0,
     },
@@ -36,6 +36,10 @@
       score.p2.sets[setNum] - score.p1.sets[setNum] >= 2)
   ) {
     setNum += 1;
+  }
+
+  $: if (setNum === 3) {
+    alert("Match Over!");
   }
 
   const handleBtnClick = (player) => {
