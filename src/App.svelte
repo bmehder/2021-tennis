@@ -5,13 +5,13 @@
   $: score = {
     p1: {
       name: "Roger",
-      sets: [5, 0, 0],
+      sets: [0, 0, 0],
       pt: 0,
       tb: 0,
     },
     p2: {
       name: "Rafa",
-      sets: [5, 0, 0],
+      sets: [0, 0, 0],
       pt: 0,
       tb: 0,
     },
@@ -29,18 +29,16 @@
     ? (isTiebreak = true)
     : (isTiebreak = false);
 
-  const handleGame = (player) => {
+  const handleBtnClick = (player) => {
     if (isTiebreak) {
       scoreTiebreak(player);
     } else if (score.p1.pt === "Ad" || score.p2.pt === "Ad") {
       scoreAdPoint(player);
       return;
-    } else if (!isDeuce) {
-      score.p1.pt <= 40 && score.p2.pt <= 40 && scoreNormalPoint(player);
-    } else {
-      // it's deuce
+    } else if (isDeuce) {
       player.pt = "Ad";
-      isDeuce = false;
+    } else {
+      scoreNormalPoint(player);
     }
     score = score;
   };
@@ -62,7 +60,6 @@
     if (player.pt === "Ad") {
       player.sets[setNum] = +player.sets[setNum] + 1;
       resetPoints();
-      score = score;
     } else {
       score.p1.pt = 40;
       score.p2.pt = 40;
@@ -80,7 +77,6 @@
       (score.p1.tb >= 7 && score.p2.tb + 1 < score.p1.tb) ||
       (score.p2.tb >= 7 && score.p1.tb + 1 < score.p2.tb)
     ) {
-      console.log("Player 1 wins!");
       player.sets[setNum] = +player.sets[setNum] + 1;
       setNum += 1;
       isTiebreak = false;
@@ -111,8 +107,8 @@
   </article>
 
   <div>
-    <button on:click={() => handleGame(score.p1)}>Player 1</button>
-    <button on:click={() => handleGame(score.p2)}>Player 2</button>
+    <button on:click={() => handleBtnClick(score.p1)}>Player 1</button>
+    <button on:click={() => handleBtnClick(score.p2)}>Player 2</button>
   </div>
 
   {#if score.p1.tb > 0 || score.p2.tb > 0}
