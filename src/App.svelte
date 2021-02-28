@@ -8,49 +8,48 @@
 
   // Keep track of the current set with a var.
   //
-  // $: score = {
-  //   p1: {
-  //     name: "Roger",
-  //     sets: [5, 0, 0],
-  //     pt: 0,
-  //     tb: 0,
-  //   },
-  //   p2: {
-  //     name: "Rafa"
-  //     sets: [5, 0, 0],
-  //     pt: 0,
-  //     tb: 0,
-  //   },
-  // };
-
   $: score = {
     p1: {
-      s1: 5,
-      s2: 0,
-      s3: 0,
+      name: "Roger",
+      sets: [5, 0, 0],
       pt: 0,
       tb: 0,
     },
     p2: {
-      s1: 5,
-      s2: 0,
-      s3: 0,
+      name: "Rafa",
+      sets: [5, 0, 0],
       pt: 0,
       tb: 0,
     },
   };
 
+  // $: score = {
+  //   p1: {
+  //     s1: 5,
+  //     s2: 0,
+  //     s3: 0,
+  //     pt: 0,
+  //     tb: 0,
+  //   },
+  //   p2: {
+  //     s1: 5,
+  //     s2: 0,
+  //     s3: 0,
+  //     pt: 0,
+  //     tb: 0,
+  //   },
+  // };
+
   let isDeuce;
   let isTiebreak;
 
-  let currentSet;
+  let setIndex = 0;
 
   $: score.p1.pt === 40 && score.p2.pt === 40
     ? (isDeuce = true)
     : (isDeuce = false);
 
-  // $: score.p1.set[currentSet] === 6 && score.p2.set[currentSet] === 6
-  $: score.p1.s1 === 6 && score.p2.s1 === 6
+  $: score.p1.sets[setIndex] === 6 && score.p2.sets[setIndex] === 6
     ? (isTiebreak = true)
     : (isTiebreak = false);
 
@@ -58,7 +57,7 @@
     if (!isTiebreak) {
       if (score.p1.pt === "Ad" || score.p2.pt === "Ad") {
         if (player.pt === "Ad") {
-          player.s1 = +player.s1 + 1;
+          player.sets[setIndex] = +player.sets[setIndex] + 1;
           resetPoints();
           score = score;
         } else {
@@ -77,7 +76,7 @@
           } else if (player.pt === 30) {
             player.pt = 40;
           } else {
-            player.s1 = +player.s1 + 1;
+            player.sets[setIndex] = +player.sets[setIndex] + 1;
             resetPoints();
           }
         }
@@ -120,14 +119,14 @@
     <span>3</span>
     <span>Point</span>
     <input value="Player 1" />
-    <input bind:value={score.p1.s1} />
-    <input bind:value={score.p1.s2} />
-    <input bind:value={score.p1.s3} />
+    <input bind:value={score.p1.sets[0]} />
+    <input bind:value={score.p1.sets[1]} />
+    <input bind:value={score.p1.sets[2]} />
     <input bind:value={score.p1.pt} />
     <input value="Player 2" />
-    <input bind:value={score.p2.s1} />
-    <input bind:value={score.p2.s2} />
-    <input bind:value={score.p2.s3} />
+    <input bind:value={score.p2.sets[0]} />
+    <input bind:value={score.p2.sets[1]} />
+    <input bind:value={score.p1.sets[2]} />
     <input bind:value={score.p2.pt} />
   </article>
 
