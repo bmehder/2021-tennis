@@ -17,6 +17,7 @@
     },
   };
 
+  let isMatch = true;
   let isDeuce;
   let isTiebreak;
   let setNum = 0;
@@ -39,7 +40,7 @@
       score.p2.sets[setNum] - score.p1.sets[setNum] >= 2)
   ) {
     setNum += 1;
-    setNum === 3 && alert("Match Over!");
+    setNum === 3 && (isMatch = false);
   }
 
   const handleBtnClick = (player) => {
@@ -101,29 +102,37 @@
 
 <section>
   <article>
-    <span />
-    <span>1</span>
-    <span>2</span>
-    <span>3</span>
-    <span>Point</span>
+    <div>
+      <span>Player</span>
+      <span>1</span>
+      <span>2</span>
+      <span>3</span>
+      <span>Point</span>
+    </div>
 
-    <input bind:value={score.p1.name} />
-    <input bind:value={score.p1.sets[0]} />
-    <input bind:value={score.p1.sets[1]} />
-    <input bind:value={score.p1.sets[2]} />
-    <input bind:value={score.p1.pt} />
+    <div>
+      <input bind:value={score.p1.name} />
+      <input class="border-left" bind:value={score.p1.sets[0]} />
+      <input class="border-left" bind:value={score.p1.sets[1]} />
+      <input class="border-left" bind:value={score.p1.sets[2]} />
+      <input class="border-left" bind:value={score.p1.pt} />
+    </div>
 
-    <input bind:value={score.p2.name} />
-    <input bind:value={score.p2.sets[0]} />
-    <input bind:value={score.p2.sets[1]} />
-    <input bind:value={score.p2.sets[2]} />
-    <input bind:value={score.p2.pt} />
+    <div>
+      <input bind:value={score.p2.name} />
+      <input class="border-left" bind:value={score.p2.sets[0]} />
+      <input class="border-left" bind:value={score.p2.sets[1]} />
+      <input class="border-left" bind:value={score.p2.sets[2]} />
+      <input class="border-left" bind:value={score.p2.pt} />
+    </div>
   </article>
 
-  <div>
-    <button on:click={() => handleBtnClick(score.p1)}>Player 1</button>
-    <button on:click={() => handleBtnClick(score.p2)}>Player 2</button>
-  </div>
+  {#if isMatch}
+    <div>
+      <button on:click={() => handleBtnClick(score.p1)}>Player 1</button>
+      <button on:click={() => handleBtnClick(score.p2)}>Player 2</button>
+    </div>
+  {/if}
 
   {#if isTiebreak}
     <aside>{score.p1.tb} : {score.p2.tb}</aside>
@@ -136,26 +145,61 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-width: 600px;
+    width: 480px;
     margin: 2em auto;
-  }
-  section div {
-    display: flex;
-    margin: 2em auto;
-    gap: 1em;
+    padding: 2em;
+    background-image: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(0, 0, 0, 0.1)
+    );
+    border-radius: 1em;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   }
   article {
+    border: 1px solid #ddd;
+  }
+  article div {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
+  }
+  article div:nth-child(1) {
+    padding: 1em 0;
+    background-color: dodgerblue;
+    color: white;
+  }
+  article div:nth-child(2) input {
+    background-color: #eee;
+  }
+  article div:nth-child(3) input {
+    background-color: #e5e5e5;
   }
   input {
     width: 80px;
     margin: 0;
+    padding: 1em 0;
     text-align: center;
+    border: none;
+    border-radius: 0;
+  }
+  div input:first-child {
+    text-align: left;
+    padding-left: 1em;
+  }
+  div input:last-child {
+    font-weight: bold;
   }
   span {
-    padding-bottom: 0.25em;
     text-align: center;
     font-weight: bold;
+  }
+  button {
+    margin: 1em 0.5em;
+    padding: 1em 2em;
+    background-color: dodgerblue;
+    color: white;
+  }
+  .border-left {
+    border-left: 1px solid #ccc;
   }
 </style>
