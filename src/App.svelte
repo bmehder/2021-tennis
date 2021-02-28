@@ -1,6 +1,6 @@
 <script>
   const l = (value) => console.log(value);
-  $: l(isTiebreak);
+  $: l(score);
 
   $: score = {
     p1: {
@@ -51,15 +51,15 @@
     } else if (player.pt === 30) {
       player.pt = 40;
     } else {
-      player.sets[setNum] = +player.sets[setNum] + 1;
       resetPoints();
+      player.sets[setNum] = +player.sets[setNum] + 1;
     }
   };
 
   const scoreAdPoint = (player) => {
     if (player.pt === "Ad") {
-      player.sets[setNum] = +player.sets[setNum] + 1;
       resetPoints();
+      player.sets[setNum] = +player.sets[setNum] + 1;
     } else {
       score.p1.pt = 40;
       score.p2.pt = 40;
@@ -69,6 +69,8 @@
   const resetPoints = () => {
     score.p1.pt = 0;
     score.p2.pt = 0;
+    score.p1.tb = 0;
+    score.p2.tb = 0;
   };
 
   const scoreTiebreak = (player) => {
@@ -79,7 +81,7 @@
     ) {
       player.sets[setNum] = +player.sets[setNum] + 1;
       setNum += 1;
-      isTiebreak = false;
+      // isTiebreak = false;
       resetPoints();
     }
   };
@@ -102,7 +104,7 @@
     <input bind:value={score.p2.name} />
     <input bind:value={score.p2.sets[0]} />
     <input bind:value={score.p2.sets[1]} />
-    <input bind:value={score.p1.sets[2]} />
+    <input bind:value={score.p2.sets[2]} />
     <input bind:value={score.p2.pt} />
   </article>
 
@@ -111,7 +113,7 @@
     <button on:click={() => handleBtnClick(score.p2)}>Player 2</button>
   </div>
 
-  {#if score.p1.tb > 0 || score.p2.tb > 0}
+  {#if isTiebreak}
     <aside>{score.p1.tb} : {score.p2.tb}</aside>
   {/if}
 </section>
