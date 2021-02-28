@@ -5,13 +5,13 @@
   $: score = {
     p1: {
       name: "Roger",
-      sets: [6, 4, 5],
+      sets: [0, 0, 0],
       pt: 0,
       tb: 0,
     },
     p2: {
       name: "Rafa",
-      sets: [4, 6, 5],
+      sets: [0, 0, 0],
       pt: 0,
       tb: 0,
     },
