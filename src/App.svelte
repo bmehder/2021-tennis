@@ -186,9 +186,6 @@
     text-align: left;
     padding-left: 1em;
   }
-  div input:last-child {
-    font-weight: bold;
-  }
   span {
     text-align: center;
     font-weight: bold;
