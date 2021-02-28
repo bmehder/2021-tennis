@@ -1,6 +1,6 @@
 <script>
   const l = (value) => console.log(value);
-  $: l(score);
+  // $: l(score);
 
   $: score = {
     p1: {
@@ -28,6 +28,15 @@
   $: score.p1.sets[setNum] === 6 && score.p2.sets[setNum] === 6
     ? (isTiebreak = true)
     : (isTiebreak = false);
+
+  $: if (
+    (score.p1.sets[setNum] >= 6 &&
+      score.p1.sets[setNum] - score.p2.sets[setNum] >= 2) ||
+    (score.p2.sets[setNum] >= 6 &&
+      score.p2.sets[setNum] - score.p1.sets[setNum] >= 2)
+  ) {
+    setNum += 1;
+  }
 
   const handleBtnClick = (player) => {
     if (isTiebreak) {
