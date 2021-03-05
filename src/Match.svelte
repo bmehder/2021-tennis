@@ -69,16 +69,19 @@
     } else if (winner.pt === 30) {
       winner.pt = 40;
     } else {
-      winner.sets[setNum] = +winner.sets[setNum] + 1;
+      scoreGame(winner);
       resetPoints();
     }
   };
+
+  const scoreGame = (winner) =>
+    (winner.sets[setNum] = +winner.sets[setNum] + 1);
 
   const scoreDeucePoint = (winner) => (winner.pt = "Ad");
 
   const scoreAdPoint = (winner) => {
     if (winner.pt === "Ad") {
-      winner.sets[setNum] = +winner.sets[setNum] + 1;
+      scoreGame(winner);
       resetPoints();
     } else {
       score.p1.pt = 40;
@@ -92,7 +95,7 @@
       (score.p1.tb >= 7 && score.p2.tb + 1 < score.p1.tb) ||
       (score.p2.tb >= 7 && score.p1.tb + 1 < score.p2.tb)
     ) {
-      winner.sets[setNum] = +winner.sets[setNum] + 1;
+      scoreGame(winner);
       setNum += 1;
       resetPoints();
     }
@@ -145,6 +148,8 @@
       <button on:click={() => handleBtnClick(score.p1)}>Player 1</button>
       <button on:click={() => handleBtnClick(score.p2)}>Player 2</button>
     </div>
+  {:else}
+    <button>Submit Match</button>
   {/if}
 </section>
 

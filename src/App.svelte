@@ -9,6 +9,14 @@
 
 <Match />
 
+<p>
+  <small
+    ><a href="https://github.com/bmehder/2021-tennis" target="_blank"
+      >View the GitHub Repo</a
+    ></small
+  >
+</p>
+
 <style>
   h1 {
     margin-bottom: 0.2em;
