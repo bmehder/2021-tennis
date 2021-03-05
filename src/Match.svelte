@@ -1,15 +1,18 @@
 <script>
+  export let player1 = "Player 1";
+  export let player2 = "Player 2";
+
   const score = {
     p1: {
-      name: "Player 1",
-      sets: [0, 0, 0],
+      name: player1,
+      sets: [5, 0, 0],
       pt: 0,
       tb: 0,
       setsWon: 0,
     },
     p2: {
-      name: "Player 2",
-      sets: [0, 0, 0],
+      name: player2,
+      sets: [5, 0, 0],
       pt: 0,
       tb: 0,
       setsWon: 0,
@@ -118,17 +121,35 @@
 
       <div>
         <input bind:value={score.p1.name} />
-        <input bind:value={score.p1.sets[0]} />
-        <input bind:value={score.p1.sets[1]} />
-        <input bind:value={score.p1.sets[2]} />
+        <input
+          class:bold={setIndex > 0 && score.p1.sets[0] > score.p2.sets[0]}
+          bind:value={score.p1.sets[0]}
+        />
+        <input
+          class:bold={setIndex > 1 && score.p1.sets[1] > score.p2.sets[1]}
+          bind:value={score.p1.sets[1]}
+        />
+        <input
+          class:bold={setIndex > 2 && score.p1.sets[2] > score.p2.sets[2]}
+          bind:value={score.p1.sets[2]}
+        />
         <input bind:value={score.p1.pt} readonly />
       </div>
 
       <div>
         <input bind:value={score.p2.name} />
-        <input bind:value={score.p2.sets[0]} />
-        <input bind:value={score.p2.sets[1]} />
-        <input bind:value={score.p2.sets[2]} />
+        <input
+          class:bold={setIndex > 0 && score.p2.sets[0] > score.p1.sets[0]}
+          bind:value={score.p2.sets[0]}
+        />
+        <input
+          class:bold={setIndex > 1 && score.p2.sets[1] > score.p1.sets[1]}
+          bind:value={score.p2.sets[1]}
+        />
+        <input
+          class:bold={setIndex > 2 && score.p2.sets[2] > score.p1.sets[2]}
+          bind:value={score.p2.sets[2]}
+        />
         <input bind:value={score.p2.pt} readonly />
       </div>
     </form>
