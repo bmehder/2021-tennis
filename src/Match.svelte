@@ -22,19 +22,6 @@
   $: isTiebreak =
     score.p1.sets[score.setIndex] === 6 && score.p2.sets[score.setIndex] === 6;
 
-  // $: isSetOver =
-  //   (score.p1.sets[score.setIndex] >= 6 &&
-  //     score.p1.sets[score.setIndex] - score.p2.sets[score.setIndex] >= 2) ||
-  //   (score.p2.sets[score.setIndex] >= 6 &&
-  //     score.p2.sets[score.setIndex] - score.p1.sets[score.setIndex] >= 2);
-
-  let isSetOver;
-  // $: isSetOver =
-  //   (score.p1.sets[score.setIndex] >= 6 &&
-  //     score.p1.sets[score.setIndex] - score.p2.sets[score.setIndex] >= 2) ||
-  //   (score.p2.sets[score.setIndex] >= 6 &&
-  //     score.p2.sets[score.setIndex] - score.p1.sets[score.setIndex] >= 2);
-
   $: isMatch = score.p1.setsWon > 1 || score.p2.setsWon > 1 ? false : true;
 
   $: console.log(score);
@@ -50,14 +37,7 @@
       scoreNormalPoint(winner);
     }
     score = score;
-    if (
-      (score.p1.sets[score.setIndex] >= 6 &&
-        score.p1.sets[score.setIndex] - score.p2.sets[score.setIndex] >= 2) ||
-      (score.p2.sets[score.setIndex] >= 6 &&
-        score.p2.sets[score.setIndex] - score.p1.sets[score.setIndex] >= 2)
-    ) {
-      scoreSet(winner);
-    }
+    scoreSet(winner);
   };
 
   const scoreNormalPoint = (winner) => {
@@ -102,8 +82,15 @@
   };
 
   const scoreSet = (winner) => {
-    score.setIndex += 1;
-    winner.setsWon++;
+    if (
+      (score.p1.sets[score.setIndex] >= 6 &&
+        score.p1.sets[score.setIndex] - score.p2.sets[score.setIndex] >= 2) ||
+      (score.p2.sets[score.setIndex] >= 6 &&
+        score.p2.sets[score.setIndex] - score.p1.sets[score.setIndex] >= 2)
+    ) {
+      score.setIndex += 1;
+      winner.setsWon++;
+    }
   };
 
   const resetPoints = () => {
