@@ -253,7 +253,7 @@
   .winner {
     font-weight: bold;
   }
-  @media screen and (max-width: 828px) {
+  @media screen and (max-width: 767px) {
     section {
       width: 360px;
     }
