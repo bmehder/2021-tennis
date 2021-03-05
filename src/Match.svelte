@@ -5,14 +5,14 @@
   const score = {
     p1: {
       name: player1,
-      sets: [5, 0, 0],
+      sets: [0, 0, 0],
       pt: 0,
       tb: 0,
       setsWon: 0,
     },
     p2: {
       name: player2,
-      sets: [5, 0, 0],
+      sets: [0, 0, 0],
       pt: 0,
       tb: 0,
       setsWon: 0,
@@ -122,35 +122,45 @@
       <div>
         <input bind:value={score.p1.name} />
         <input
-          class:bold={setIndex > 0 && score.p1.sets[0] > score.p2.sets[0]}
+          class:winner={setIndex > 0 && score.p1.sets[0] > score.p2.sets[0]}
           bind:value={score.p1.sets[0]}
         />
         <input
-          class:bold={setIndex > 1 && score.p1.sets[1] > score.p2.sets[1]}
+          class:winner={setIndex > 1 && score.p1.sets[1] > score.p2.sets[1]}
           bind:value={score.p1.sets[1]}
         />
         <input
-          class:bold={setIndex > 2 && score.p1.sets[2] > score.p2.sets[2]}
+          class:winner={setIndex > 2 && score.p1.sets[2] > score.p2.sets[2]}
           bind:value={score.p1.sets[2]}
         />
-        <input bind:value={score.p1.pt} readonly />
+        <input
+          class:winner={score.p1.pt !== 0 &&
+            (score.p1.pt >= score.p2.pt || score.p1.pt === "Ad")}
+          bind:value={score.p1.pt}
+          readonly
+        />
       </div>
 
       <div>
         <input bind:value={score.p2.name} />
         <input
-          class:bold={setIndex > 0 && score.p2.sets[0] > score.p1.sets[0]}
+          class:winner={setIndex > 0 && score.p2.sets[0] > score.p1.sets[0]}
           bind:value={score.p2.sets[0]}
         />
         <input
-          class:bold={setIndex > 1 && score.p2.sets[1] > score.p1.sets[1]}
+          class:winner={setIndex > 1 && score.p2.sets[1] > score.p1.sets[1]}
           bind:value={score.p2.sets[1]}
         />
         <input
-          class:bold={setIndex > 2 && score.p2.sets[2] > score.p1.sets[2]}
+          class:winner={setIndex > 2 && score.p2.sets[2] > score.p1.sets[2]}
           bind:value={score.p2.sets[2]}
         />
-        <input bind:value={score.p2.pt} readonly />
+        <input
+          class:winner={score.p2.pt !== 0 &&
+            (score.p2.pt >= score.p1.pt || score.p2.pt === "Ad")}
+          bind:value={score.p2.pt}
+          readonly
+        />
       </div>
     </form>
   {:else}
@@ -236,7 +246,7 @@
     background-color: dodgerblue;
     color: white;
   }
-  .bold {
+  .winner {
     font-weight: bold;
   }
 </style>
