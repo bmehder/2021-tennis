@@ -17,12 +17,14 @@
     setIndex: 0,
   };
 
+  let setIndex = score.setIndex;
+
   $: isDeuce = score.p1.pt === 40 && score.p2.pt === 40;
 
   $: isAd = score.p1.pt === "Ad" || score.p2.pt === "Ad";
 
   $: isTiebreak =
-    score.p1.sets[score.setIndex] === 6 && score.p2.sets[score.setIndex] === 6;
+    score.p1.sets[setIndex] === 6 && score.p2.sets[setIndex] === 6;
 
   $: isMatch = score.p1.setsWon > 1 || score.p2.setsWon > 1 ? false : true;
 
@@ -65,9 +67,8 @@
     }
   };
 
-  const scoreGame = (winner) => {
-    winner.sets[score.setIndex] = +winner.sets[score.setIndex] + 1;
-  };
+  const scoreGame = (winner) =>
+    (winner.sets[setIndex] = winner.sets[setIndex] + 1);
 
   const scoreTiebreak = (winner) => {
     winner.tb += 1;
@@ -76,21 +77,21 @@
       (score.p2.tb >= 7 && score.p1.tb + 1 < score.p2.tb)
     ) {
       scoreGame(winner);
-      score.setIndex += 1;
-      winner.setsWon++;
+      setIndex += 1;
+      winner.setsWon += 1;
       resetPoints();
     }
   };
 
   const scoreSet = (winner) => {
     if (
-      (score.p1.sets[score.setIndex] >= 6 &&
-        score.p1.sets[score.setIndex] - score.p2.sets[score.setIndex] >= 2) ||
-      (score.p2.sets[score.setIndex] >= 6 &&
-        score.p2.sets[score.setIndex] - score.p1.sets[score.setIndex] >= 2)
+      (score.p1.sets[setIndex] >= 6 &&
+        score.p1.sets[setIndex] - score.p2.sets[setIndex] >= 2) ||
+      (score.p2.sets[setIndex] >= 6 &&
+        score.p2.sets[setIndex] - score.p1.sets[setIndex] >= 2)
     ) {
-      score.setIndex += 1;
-      winner.setsWon++;
+      setIndex += 1;
+      winner.setsWon += 1;
     }
   };
 
@@ -117,17 +118,41 @@
 
       <div>
         <input bind:value={score.p1.name} />
-        <input bind:value={score.p1.sets[0]} />
-        <input bind:value={score.p1.sets[1]} />
-        <input bind:value={score.p1.sets[2]} />
+        <input
+          class:bold={score.p1.sets[0] >= 6 &&
+            score.p1.sets[0] > score.p2.sets[0]}
+          bind:value={score.p1.sets[0]}
+        />
+        <input
+          class:bold={score.p1.sets[1] >= 6 &&
+            score.p1.sets[1] > score.p2.sets[1]}
+          bind:value={score.p1.sets[1]}
+        />
+        <input
+          class:bold={score.p1.sets[2] >= 6 &&
+            score.p1.sets[2] > score.p2.sets[2]}
+          bind:value={score.p1.sets[2]}
+        />
         <input bind:value={score.p1.pt} readonly />
       </div>
 
       <div>
         <input bind:value={score.p2.name} />
-        <input bind:value={score.p2.sets[0]} />
-        <input bind:value={score.p2.sets[1]} />
-        <input bind:value={score.p2.sets[2]} />
+        <input
+          class:bold={score.p2.sets[0] >= 6 &&
+            score.p2.sets[0] > score.p1.sets[0]}
+          bind:value={score.p2.sets[0]}
+        />
+        <input
+          class:bold={score.p2.sets[1] >= 6 &&
+            score.p2.sets[1] > score.p1.sets[1]}
+          bind:value={score.p2.sets[1]}
+        />
+        <input
+          class:bold={score.p2.sets[2] >= 6 &&
+            score.p2.sets[2] > score.p1.sets[2]}
+          bind:value={score.p2.sets[2]}
+        />
         <input bind:value={score.p2.pt} readonly />
       </div>
     </form>
@@ -213,5 +238,8 @@
     padding: 1em 2em;
     background-color: dodgerblue;
     color: white;
+  }
+  .bold {
+    font-weight: bold;
   }
 </style>
