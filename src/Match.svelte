@@ -1,13 +1,13 @@
 <script>
   const score = {
     p1: {
-      sets: [5, 0, 0],
+      sets: [0, 0, 0],
       pt: 0,
       tb: 0,
       setsWon: 0,
     },
     p2: {
-      sets: [5, 0, 0],
+      sets: [0, 0, 0],
       pt: 0,
       tb: 0,
       setsWon: 0,
