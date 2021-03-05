@@ -118,7 +118,7 @@
         <input bind:value={score.p1.sets[0]} />
         <input bind:value={score.p1.sets[1]} />
         <input bind:value={score.p1.sets[2]} />
-        <input bind:value={score.p1.pt} />
+        <input bind:value={score.p1.pt} readonly />
       </div>
 
       <div>
@@ -126,7 +126,7 @@
         <input bind:value={score.p2.sets[0]} />
         <input bind:value={score.p2.sets[1]} />
         <input bind:value={score.p2.sets[2]} />
-        <input bind:value={score.p2.pt} />
+        <input bind:value={score.p2.pt} readonly />
       </div>
     </form>
   {:else}
