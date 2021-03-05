@@ -15,20 +15,29 @@
     setIndex: 0,
   };
 
-  let i = score.setIndex;
-
   $: isDeuce = score.p1.pt === 40 && score.p2.pt === 40;
 
   $: isAd = score.p1.pt === "Ad" || score.p2.pt === "Ad";
 
-  $: isTiebreak = score.p1.sets[i] === 6 && score.p2.sets[i] === 6;
+  $: isTiebreak =
+    score.p1.sets[score.setIndex] === 6 && score.p2.sets[score.setIndex] === 6;
 
-  // is the set over? Then increase the set score.
-  $: isSetOver =
-    (score.p1.sets[i] >= 6 && score.p1.sets[i] - score.p2.sets[i] >= 2) ||
-    (score.p2.sets[i] >= 6 && score.p2.sets[i] - score.p1.sets[i] >= 2);
+  // $: isSetOver =
+  //   (score.p1.sets[score.setIndex] >= 6 &&
+  //     score.p1.sets[score.setIndex] - score.p2.sets[score.setIndex] >= 2) ||
+  //   (score.p2.sets[score.setIndex] >= 6 &&
+  //     score.p2.sets[score.setIndex] - score.p1.sets[score.setIndex] >= 2);
+
+  let isSetOver;
+  // $: isSetOver =
+  //   (score.p1.sets[score.setIndex] >= 6 &&
+  //     score.p1.sets[score.setIndex] - score.p2.sets[score.setIndex] >= 2) ||
+  //   (score.p2.sets[score.setIndex] >= 6 &&
+  //     score.p2.sets[score.setIndex] - score.p1.sets[score.setIndex] >= 2);
 
   $: isMatch = score.p1.setsWon > 1 || score.p2.setsWon > 1 ? false : true;
+
+  $: console.log(score);
 
   const handleBtnClick = (winner) => {
     if (isTiebreak) {
@@ -41,10 +50,15 @@
       scoreNormalPoint(winner);
     }
     score = score;
-    isSetOver && scoreSet(winner);
+    if (
+      (score.p1.sets[score.setIndex] >= 6 &&
+        score.p1.sets[score.setIndex] - score.p2.sets[score.setIndex] >= 2) ||
+      (score.p2.sets[score.setIndex] >= 6 &&
+        score.p2.sets[score.setIndex] - score.p1.sets[score.setIndex] >= 2)
+    ) {
+      scoreSet(winner);
+    }
   };
-
-  $: console.log(isMatch);
 
   const scoreNormalPoint = (winner) => {
     if (winner.pt === 0) {
@@ -71,7 +85,9 @@
     }
   };
 
-  const scoreGame = (winner) => (winner.sets[i] = +winner.sets[i] + 1);
+  const scoreGame = (winner) => {
+    winner.sets[score.setIndex] = +winner.sets[score.setIndex] + 1;
+  };
 
   const scoreTiebreak = (winner) => {
     winner.tb += 1;
@@ -86,7 +102,7 @@
   };
 
   const scoreSet = (winner) => {
-    i += 1;
+    score.setIndex += 1;
     winner.setsWon++;
   };
 
