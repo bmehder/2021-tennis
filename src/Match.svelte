@@ -98,6 +98,8 @@
     score.p1.tb = 0;
     score.p2.tb = 0;
   };
+
+  const handleSubmit = () => alert(JSON.stringify(score, null, "  "));
 </script>
 
 <section>
@@ -140,7 +142,7 @@
       <button on:click={() => handleBtnClick(score.p2)}>Player 2</button>
     </div>
   {:else}
-    <button>Submit Match</button>
+    <button on:click={handleSubmit}>Submit Match</button>
   {/if}
 </section>
 
