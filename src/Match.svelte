@@ -1,12 +1,14 @@
 <script>
   const score = {
     p1: {
+      name: "Player 1",
       sets: [0, 0, 0],
       pt: 0,
       tb: 0,
       setsWon: 0,
     },
     p2: {
+      name: "Player 2",
       sets: [0, 0, 0],
       pt: 0,
       tb: 0,
@@ -114,7 +116,7 @@
       </div>
 
       <div>
-        <input value="Player 1" />
+        <input bind:value={score.p1.name} />
         <input bind:value={score.p1.sets[0]} />
         <input bind:value={score.p1.sets[1]} />
         <input bind:value={score.p1.sets[2]} />
@@ -122,7 +124,7 @@
       </div>
 
       <div>
-        <input value="Player 2" />
+        <input bind:value={score.p2.name} />
         <input bind:value={score.p2.sets[0]} />
         <input bind:value={score.p2.sets[1]} />
         <input bind:value={score.p2.sets[2]} />
