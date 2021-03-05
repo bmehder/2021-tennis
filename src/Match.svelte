@@ -1,52 +1,34 @@
 <script>
   const score = {
     p1: {
-      sets: [0, 0, 0],
+      sets: [5, 0, 0],
       pt: 0,
       tb: 0,
+      setsWon: 0,
     },
     p2: {
       sets: [0, 0, 0],
       pt: 0,
       tb: 0,
+      setsWon: 0,
     },
+    setIndex: 0,
   };
 
-  // Match State
-  let isMatch = true;
-  let isDeuce;
-  let isAd;
-  let isTiebreak;
-  let setNum = 0;
+  let i = score.setIndex;
 
-  // isDeuce?
-  $: score.p1.pt === 40 && score.p2.pt === 40
-    ? (isDeuce = true)
-    : (isDeuce = false);
+  $: isDeuce = score.p1.pt === 40 && score.p2.pt === 40;
 
-  // isAd?
-  $: score.p1.pt === "Ad" || score.p2.pt === "Ad"
-    ? (isAd = true)
-    : (isAd = false);
+  $: isAd = score.p1.pt === "Ad" || score.p2.pt === "Ad";
 
-  // isTiebreak?
-  $: score.p1.sets[setNum] === 6 && score.p2.sets[setNum] === 6
-    ? (isTiebreak = true)
-    : (isTiebreak = false);
+  $: isTiebreak = score.p1.sets[i] === 6 && score.p2.sets[i] === 6;
 
-  // is the set over?
-  $: if (
-    (score.p1.sets[setNum] >= 6 &&
-      score.p1.sets[setNum] - score.p2.sets[setNum] >= 2) ||
-    (score.p2.sets[setNum] >= 6 &&
-      score.p2.sets[setNum] - score.p1.sets[setNum] >= 2)
-  ) {
-    setNum += 1;
-  }
+  // is the set over? Then increase the set score.
+  $: isSetOver =
+    (score.p1.sets[i] >= 6 && score.p1.sets[i] - score.p2.sets[i] >= 2) ||
+    (score.p2.sets[i] >= 6 && score.p2.sets[i] - score.p1.sets[i] >= 2);
 
-  // TODO: make this work for a staight set win
-  // TODO: announce the winner
-  $: setNum === 3 && (isMatch = false);
+  $: isMatch = score.p1.setsWon > 1 || score.p2.setsWon > 1 ? false : true;
 
   const handleBtnClick = (winner) => {
     if (isTiebreak) {
@@ -59,7 +41,10 @@
       scoreNormalPoint(winner);
     }
     score = score;
+    isSetOver && scoreSet(winner);
   };
+
+  $: console.log(isMatch);
 
   const scoreNormalPoint = (winner) => {
     if (winner.pt === 0) {
@@ -74,9 +59,6 @@
     }
   };
 
-  const scoreGame = (winner) =>
-    (winner.sets[setNum] = +winner.sets[setNum] + 1);
-
   const scoreDeucePoint = (winner) => (winner.pt = "Ad");
 
   const scoreAdPoint = (winner) => {
@@ -89,6 +71,8 @@
     }
   };
 
+  const scoreGame = (winner) => (winner.sets[i] = +winner.sets[i] + 1);
+
   const scoreTiebreak = (winner) => {
     winner.tb += 1;
     if (
@@ -96,9 +80,14 @@
       (score.p2.tb >= 7 && score.p1.tb + 1 < score.p2.tb)
     ) {
       scoreGame(winner);
-      setNum += 1;
+      i += 1;
       resetPoints();
     }
+  };
+
+  const scoreSet = (winner) => {
+    i += 1;
+    winner.setsWon++;
   };
 
   const resetPoints = () => {
