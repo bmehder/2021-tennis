@@ -1,19 +1,20 @@
 <script>
   let isMatch = true;
   let isDeuce;
+  let isAd;
   let isTiebreak;
   let setNum = 0;
 
   $: score = {
     p1: {
       name: "Roger",
-      sets: [0, 0, 0],
+      sets: [5, 0, 0],
       pt: 0,
       tb: 0,
     },
     p2: {
       name: "Rafa",
-      sets: [0, 0, 0],
+      sets: [5, 0, 0],
       pt: 0,
       tb: 0,
     },
@@ -23,6 +24,11 @@
   $: score.p1.pt === 40 && score.p2.pt === 40
     ? (isDeuce = true)
     : (isDeuce = false);
+
+  // is either player at Ad?
+  $: score.p1.pt === "Ad" || score.p2.pt === "Ad"
+    ? (isAd = true)
+    : (isAd = false);
 
   // isTiebreak
   $: score.p1.sets[setNum] === 6 && score.p2.sets[setNum] === 6
@@ -44,11 +50,11 @@
   const handleBtnClick = (player) => {
     if (isTiebreak) {
       scoreTiebreak(player);
-    } else if (score.p1.pt === "Ad" || score.p2.pt === "Ad") {
+    } else if (isAd) {
       scoreAdPoint(player);
       return;
     } else if (isDeuce) {
-      player.pt = "Ad";
+      scoreDeucePoint(player);
     } else {
       scoreNormalPoint(player);
     }
@@ -77,6 +83,8 @@
       score.p2.pt = 40;
     }
   };
+
+  const scoreDeucePoint = (player) => (player.pt = "Ad");
 
   const resetPoints = () => {
     score.p1.pt = 0;
