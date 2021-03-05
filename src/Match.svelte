@@ -118,41 +118,17 @@
 
       <div>
         <input bind:value={score.p1.name} />
-        <input
-          class:bold={score.p1.sets[0] >= 6 &&
-            score.p1.sets[0] > score.p2.sets[0]}
-          bind:value={score.p1.sets[0]}
-        />
-        <input
-          class:bold={score.p1.sets[1] >= 6 &&
-            score.p1.sets[1] > score.p2.sets[1]}
-          bind:value={score.p1.sets[1]}
-        />
-        <input
-          class:bold={score.p1.sets[2] >= 6 &&
-            score.p1.sets[2] > score.p2.sets[2]}
-          bind:value={score.p1.sets[2]}
-        />
+        <input bind:value={score.p1.sets[0]} />
+        <input bind:value={score.p1.sets[1]} />
+        <input bind:value={score.p1.sets[2]} />
         <input bind:value={score.p1.pt} readonly />
       </div>
 
       <div>
         <input bind:value={score.p2.name} />
-        <input
-          class:bold={score.p2.sets[0] >= 6 &&
-            score.p2.sets[0] > score.p1.sets[0]}
-          bind:value={score.p2.sets[0]}
-        />
-        <input
-          class:bold={score.p2.sets[1] >= 6 &&
-            score.p2.sets[1] > score.p1.sets[1]}
-          bind:value={score.p2.sets[1]}
-        />
-        <input
-          class:bold={score.p2.sets[2] >= 6 &&
-            score.p2.sets[2] > score.p1.sets[2]}
-          bind:value={score.p2.sets[2]}
-        />
+        <input bind:value={score.p2.sets[0]} />
+        <input bind:value={score.p2.sets[1]} />
+        <input bind:value={score.p2.sets[2]} />
         <input bind:value={score.p2.pt} readonly />
       </div>
     </form>
