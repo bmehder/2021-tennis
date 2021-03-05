@@ -7,7 +7,7 @@
       setsWon: 0,
     },
     p2: {
-      sets: [0, 0, 0],
+      sets: [5, 0, 0],
       pt: 0,
       tb: 0,
       setsWon: 0,
@@ -23,8 +23,6 @@
     score.p1.sets[score.setIndex] === 6 && score.p2.sets[score.setIndex] === 6;
 
   $: isMatch = score.p1.setsWon > 1 || score.p2.setsWon > 1 ? false : true;
-
-  $: console.log(score);
 
   const handleBtnClick = (winner) => {
     if (isTiebreak) {
@@ -76,7 +74,8 @@
       (score.p2.tb >= 7 && score.p1.tb + 1 < score.p2.tb)
     ) {
       scoreGame(winner);
-      i += 1;
+      score.setIndex += 1;
+      winner.setsWon++;
       resetPoints();
     }
   };
