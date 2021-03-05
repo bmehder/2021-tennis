@@ -186,9 +186,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 480px;
+    width: 680px;
     margin: 2em auto;
-    padding: 2em;
+    padding: 2em 0;
     background-image: linear-gradient(
       to bottom,
       transparent,
@@ -211,7 +211,8 @@
   }
   form div {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    /* grid-template-columns: repeat(5, 1fr); */
+    grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
     background-color: white;
   }
   form div:nth-child(1) {
@@ -222,8 +223,11 @@
   form div:nth-child(2) input {
     border-bottom: 1px solid #ddd;
   }
+  form div:nth-child(2) > input:first-child {
+    width: 150px;
+  }
   input {
-    width: 80px;
+    width: calc(600px / 6);
     margin: 0;
     padding: 1em 0;
     text-align: center;
@@ -248,5 +252,16 @@
   }
   .winner {
     font-weight: bold;
+  }
+  @media screen and (max-width: 375px) {
+    section {
+      width: 360px;
+    }
+    input {
+      width: calc(360px / 6);
+    }
+    form div:nth-child(2) > input:first-child {
+      width: 90px;
+    }
   }
 </style>
