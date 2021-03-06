@@ -71,7 +71,7 @@
   };
 
   const scoreGame = (winner) =>
-    (winner.sets[setIndex] = winner.sets[setIndex] + 1);
+    (winner.sets[setIndex] = +winner.sets[setIndex] + 1);
 
   const scoreTiebreak = (winner) => {
     winner.tb += 1;
