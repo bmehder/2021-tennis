@@ -8,7 +8,7 @@
     <em>Made with <a href="https://svelte.dev/" target="_blank">Svelte</a></em>
   </p>
 
-  <Match player1="Brad" player2="Novak" />
+  <Match />
 
   <p>
     <small

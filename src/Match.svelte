@@ -207,6 +207,7 @@
     margin-bottom: 1em;
   }
   form {
+    margin-top: 1.5em;
     border: 1px solid #ddd;
   }
   form div {
@@ -223,7 +224,8 @@
   form div:nth-child(2) input {
     border-bottom: 1px solid #ddd;
   }
-  form div:nth-child(2) > input:first-child {
+  form div:nth-child(2) > input:first-child,
+  form div:nth-child(3) > input:first-child {
     width: 150px;
   }
   input {
@@ -260,8 +262,10 @@
     input {
       width: calc(360px / 6);
     }
-    form div:nth-child(2) > input:first-child {
+    form div:nth-child(2) > input:first-child,
+    form div:nth-child(3) > input:first-child {
       width: 90px;
+      font-size: 0.6em;
     }
   }
 </style>
