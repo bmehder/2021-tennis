@@ -265,7 +265,6 @@
     form div:nth-child(2) > input:first-child,
     form div:nth-child(3) > input:first-child {
       width: 90px;
-      font-size: 0.6em;
     }
   }
 </style>
