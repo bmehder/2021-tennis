@@ -15,14 +15,14 @@
   const score = {
     p1: {
       name: player1,
-      sets: [5, 0, 0],
+      sets: [0, 0, 0],
       pt: 0,
       tb: 0,
       setsWon: 0,
     },
     p2: {
       name: player2,
-      sets: [5, 0, 0],
+      sets: [0, 0, 0],
       pt: 0,
       tb: 0,
       setsWon: 0,
@@ -193,14 +193,17 @@
         <input
           class:winner={isHighSetScore(0, "p1")}
           bind:value={score.p1.sets[0]}
+          readonly
         />
         <input
           class:winner={isHighSetScore(1, "p1")}
           bind:value={score.p1.sets[1]}
+          readonly
         />
         <input
           class:winner={isHighSetScore(2, "p1")}
           bind:value={score.p1.sets[2]}
+          readonly
         />
         <input
           class:winner={isHighGameScore("p1")}
@@ -214,14 +217,17 @@
         <input
           class:winner={isHighSetScore(0, "p2")}
           bind:value={score.p2.sets[0]}
+          readonly
         />
         <input
           class:winner={isHighSetScore(1, "p2")}
           bind:value={score.p2.sets[1]}
+          readonly
         />
         <input
           class:winner={isHighSetScore(2, "p2")}
           bind:value={score.p2.sets[2]}
+          readonly
         />
         <input
           class:winner={isHighGameScore("p2")}
