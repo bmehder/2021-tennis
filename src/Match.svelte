@@ -150,6 +150,20 @@
    * OPTIONALLY PERSIST DATA BY SUBMITTING THE STATE TO AN API OR...
    */
   const handleSubmit = () => alert(JSON.stringify(score));
+
+  $: isHighSetScore = (currentSet, player) => {
+    if (currentSet !== setNumber) {
+      if (player === "p1") {
+        if (score.p1.sets[currentSet] > score.p2.sets[currentSet]) {
+          return true;
+        }
+      } else {
+        if (score.p2.sets[currentSet] > score.p1.sets[currentSet]) {
+          return true;
+        }
+      }
+    }
+  };
 </script>
 
 <section class:flat>
@@ -166,15 +180,15 @@
       <div>
         <input bind:value={score.p1.name} />
         <input
-          class:winner={setNumber > 0 && score.p1.sets[0] > score.p2.sets[0]}
+          class:winner={isHighSetScore(0, "p1")}
           bind:value={score.p1.sets[0]}
         />
         <input
-          class:winner={setNumber > 1 && score.p1.sets[1] > score.p2.sets[1]}
+          class:winner={isHighSetScore(1, "p1")}
           bind:value={score.p1.sets[1]}
         />
         <input
-          class:winner={setNumber > 2 && score.p1.sets[2] > score.p2.sets[2]}
+          class:winner={isHighSetScore(2, "p1")}
           bind:value={score.p1.sets[2]}
         />
         <input
@@ -188,15 +202,15 @@
       <div>
         <input bind:value={score.p2.name} />
         <input
-          class:winner={setNumber > 0 && score.p2.sets[0] > score.p1.sets[0]}
+          class:winner={isHighSetScore(0, "p2")}
           bind:value={score.p2.sets[0]}
         />
         <input
-          class:winner={setNumber > 1 && score.p2.sets[1] > score.p1.sets[1]}
+          class:winner={isHighSetScore(1, "p2")}
           bind:value={score.p2.sets[1]}
         />
         <input
-          class:winner={setNumber > 2 && score.p2.sets[2] > score.p1.sets[2]}
+          class:winner={isHighSetScore(2, "p2")}
           bind:value={score.p2.sets[2]}
         />
         <input
