@@ -5,14 +5,14 @@
   const score = {
     p1: {
       name: player1,
-      sets: [0, 0, 0],
+      sets: [5, 0, 0],
       pt: 0,
       tb: 0,
       setsWon: 0,
     },
     p2: {
       name: player2,
-      sets: [0, 0, 0],
+      sets: [5, 0, 0],
       pt: 0,
       tb: 0,
       setsWon: 0,
@@ -203,6 +203,9 @@
     justify-content: space-between;
     align-items: center;
   }
+  aside p {
+    font-size: 1.5em;
+  }
   h3 {
     margin-bottom: 1em;
   }
@@ -212,7 +215,6 @@
   }
   form div {
     display: grid;
-    /* grid-template-columns: repeat(5, 1fr); */
     grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
     background-color: white;
   }
