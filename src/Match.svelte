@@ -29,14 +29,14 @@
   $: isTiebreak =
     score.p1.sets[setIndex] === 6 && score.p2.sets[setIndex] === 6;
 
-  const isTbWon = () => {
+  const isTiebreakOver = () => {
     return (
       (score.p1.tb >= 7 && score.p2.tb + 1 < score.p1.tb) ||
       (score.p2.tb >= 7 && score.p1.tb + 1 < score.p2.tb)
     );
   };
 
-  const isSetWon = () => {
+  const isSetOver = () => {
     return (
       (score.p1.sets[setIndex] >= 6 &&
         score.p2.sets[setIndex] + 1 < score.p1.sets[setIndex]) ||
@@ -67,7 +67,8 @@
       scoreGame(winner);
       resetPoints();
     } else {
-      winner.pt = 40;
+      score.p1.pt = 40;
+      score.p2.pt = 40;
     }
   };
 
@@ -76,7 +77,7 @@
 
   const scoreTiebreak = (winner) => {
     winner.tb += 1;
-    if (isTbWon()) {
+    if (isTiebreakOver()) {
       scoreGame(winner);
       setIndex += 1;
       winner.setsWon += 1;
@@ -85,7 +86,7 @@
   };
 
   const scoreSet = (winner) => {
-    isSetWon() && (setIndex += 1) && (winner.setsWon += 1);
+    isSetOver() && (setIndex += 1) && (winner.setsWon += 1);
   };
 
   const resetPoints = () => {
@@ -199,7 +200,7 @@
       rgba(0, 0, 0, 0.1)
     );
     border-radius: 1em;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.32);
   }
   aside {
     display: flex;
@@ -258,6 +259,7 @@
     padding: 1em 2em;
     background-color: dodgerblue;
     color: white;
+    font-weight: bold;
     border-radius: 0.25em;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
