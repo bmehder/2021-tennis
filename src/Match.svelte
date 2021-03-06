@@ -2,17 +2,21 @@
   export let player1 = "Player 1";
   export let player2 = "Player 2";
 
+  /**
+   * STATE
+   */
+
   const score = {
     p1: {
       name: player1,
-      sets: [5, 0, 0],
+      sets: [0, 0, 0],
       pt: 0,
       tb: 0,
       setsWon: 0,
     },
     p2: {
       name: player2,
-      sets: [5, 0, 0],
+      sets: [0, 0, 0],
       pt: 0,
       tb: 0,
       setsWon: 0,
@@ -20,14 +24,26 @@
     setIndex: 0,
   };
 
-  let setIndex = score.setIndex;
+  let setNumber = score.setIndex; // alias to score obj property
+
+  /**
+   * REACTIVE STATE LISTENERS (RSLs™)
+   */
 
   $: isDeuce = score.p1.pt === 40 && score.p2.pt === 40;
 
   $: isAd = score.p1.pt === "Ad" || score.p2.pt === "Ad";
 
   $: isTiebreak =
-    score.p1.sets[setIndex] === 6 && score.p2.sets[setIndex] === 6;
+    score.p1.sets[setNumber] === 6 && score.p2.sets[setNumber] === 6;
+
+  $: isMatchOver = score.p1.setsWon > 1 || score.p2.setsWon > 1;
+
+  /**
+   * STATE PREDICATES
+   *
+   * Need to be called at specific times
+   */
 
   const isTiebreakOver = () => {
     return (
@@ -38,14 +54,16 @@
 
   const isSetOver = () => {
     return (
-      (score.p1.sets[setIndex] >= 6 &&
-        score.p2.sets[setIndex] + 1 < score.p1.sets[setIndex]) ||
-      (score.p2.sets[setIndex] >= 6 &&
-        score.p1.sets[setIndex] + 1 < score.p2.sets[setIndex])
+      (score.p1.sets[setNumber] >= 6 &&
+        score.p2.sets[setNumber] + 1 < score.p1.sets[setNumber]) ||
+      (score.p2.sets[setNumber] >= 6 &&
+        score.p1.sets[setNumber] + 1 < score.p2.sets[setNumber])
     );
   };
 
-  $: isMatchOver = score.p1.setsWon > 1 || score.p2.setsWon > 1;
+  /**
+   * FUNCTIONS TO SCORE POINTS
+   */
 
   const scoreNormalPoint = (winner) => {
     if (winner.pt === 0) {
@@ -72,29 +90,37 @@
     }
   };
 
+  /**
+   * FUNCTIONS TO SCORE GAMES, SETS, & TIEBREAKS
+   */
+
   const scoreGame = (winner) =>
-    (winner.sets[setIndex] = +winner.sets[setIndex] + 1);
+    (winner.sets[setNumber] = +winner.sets[setNumber] + 1);
 
   const scoreTiebreak = (winner) => {
     winner.tb += 1;
     if (isTiebreakOver()) {
       scoreGame(winner);
-      setIndex += 1;
+      setNumber += 1;
       winner.setsWon += 1;
       resetPoints();
     }
   };
 
-  const scoreSet = (winner) => {
-    isSetOver() && (setIndex += 1) && (winner.setsWon += 1);
-  };
+  const scoreSet = (winner) =>
+    isSetOver() && (setNumber += 1) && (winner.setsWon += 1);
 
+  // Utitlity function
   const resetPoints = () => {
     score.p1.pt = 0;
     score.p2.pt = 0;
     score.p1.tb = 0;
     score.p2.tb = 0;
   };
+
+  /**
+   * BUTTON CLICK EVENT HANDLERS
+   */
 
   const handleBtnClick = (winner) => {
     if (isTiebreak) {
@@ -110,7 +136,7 @@
     scoreSet(winner);
   };
 
-  const handleSubmit = () => alert(JSON.stringify(score, null, "  "));
+  const handleSubmit = () => alert(JSON.stringify(score));
 </script>
 
 <section>
@@ -127,15 +153,15 @@
       <div>
         <input bind:value={score.p1.name} />
         <input
-          class:winner={setIndex > 0 && score.p1.sets[0] > score.p2.sets[0]}
+          class:winner={setNumber > 0 && score.p1.sets[0] > score.p2.sets[0]}
           bind:value={score.p1.sets[0]}
         />
         <input
-          class:winner={setIndex > 1 && score.p1.sets[1] > score.p2.sets[1]}
+          class:winner={setNumber > 1 && score.p1.sets[1] > score.p2.sets[1]}
           bind:value={score.p1.sets[1]}
         />
         <input
-          class:winner={setIndex > 2 && score.p1.sets[2] > score.p2.sets[2]}
+          class:winner={setNumber > 2 && score.p1.sets[2] > score.p2.sets[2]}
           bind:value={score.p1.sets[2]}
         />
         <input
@@ -149,15 +175,15 @@
       <div>
         <input bind:value={score.p2.name} />
         <input
-          class:winner={setIndex > 0 && score.p2.sets[0] > score.p1.sets[0]}
+          class:winner={setNumber > 0 && score.p2.sets[0] > score.p1.sets[0]}
           bind:value={score.p2.sets[0]}
         />
         <input
-          class:winner={setIndex > 1 && score.p2.sets[1] > score.p1.sets[1]}
+          class:winner={setNumber > 1 && score.p2.sets[1] > score.p1.sets[1]}
           bind:value={score.p2.sets[1]}
         />
         <input
-          class:winner={setIndex > 2 && score.p2.sets[2] > score.p1.sets[2]}
+          class:winner={setNumber > 2 && score.p2.sets[2] > score.p1.sets[2]}
           bind:value={score.p2.sets[2]}
         />
         <input
@@ -261,7 +287,14 @@
     color: white;
     font-weight: bold;
     border-radius: 0.25em;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: 150ms;
+  }
+  button:hover {
+    background-image: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(0, 0, 0, 0.1)
+    );
   }
   .winner {
     font-weight: bold;
