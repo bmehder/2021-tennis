@@ -156,11 +156,11 @@
   {#if !isTiebreak}
     <form>
       <div style="background:{color};">
-        <span>Player</span>
-        <span>1</span>
-        <span>2</span>
-        <span>3</span>
-        <span>Point</span>
+        <span>Players</span>
+        <span>Set 1</span>
+        <span>Set 2</span>
+        <span>Set 3</span>
+        <span>Pts.</span>
       </div>
 
       <div>
