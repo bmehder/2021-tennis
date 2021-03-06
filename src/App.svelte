@@ -5,7 +5,12 @@
 </script>
 
 <main>
-  <h1>JStennis <input type="color" bind:value={color} /> <small>v5</small></h1>
+  <h1>
+    JStennis
+    <input type="color" bind:value={color} />
+    <small>v5</small>
+  </h1>
+
   <p>
     <em>Made with <a href="https://svelte.dev/" target="_blank">Svelte</a></em>
   </p>
