@@ -5,14 +5,14 @@
   const score = {
     p1: {
       name: player1,
-      sets: [0, 0, 0],
+      sets: [5, 0, 0],
       pt: 0,
       tb: 0,
       setsWon: 0,
     },
     p2: {
       name: player2,
-      sets: [0, 0, 0],
+      sets: [5, 0, 0],
       pt: 0,
       tb: 0,
       setsWon: 0,
@@ -28,6 +28,19 @@
 
   $: isTiebreak =
     score.p1.sets[setIndex] === 6 && score.p2.sets[setIndex] === 6;
+
+  $: isTbWinner =
+    (score.p1.tb >= 7 && score.p2.tb + 1 < score.p1.tb) ||
+    (score.p2.tb >= 7 && score.p1.tb + 1 < score.p2.tb);
+
+  const isSetWinner = () => {
+    return (
+      (score.p1.sets[setIndex] >= 6 &&
+        score.p2.sets[setIndex] + 1 < score.p1.sets[setIndex]) ||
+      (score.p2.sets[setIndex] >= 6 &&
+        score.p1.sets[setIndex] + 1 < score.p2.sets[setIndex])
+    );
+  };
 
   $: isMatch = score.p1.setsWon > 1 || score.p2.setsWon > 1 ? false : true;
 
@@ -75,10 +88,7 @@
 
   const scoreTiebreak = (winner) => {
     winner.tb += 1;
-    if (
-      (score.p1.tb >= 7 && score.p2.tb + 1 < score.p1.tb) ||
-      (score.p2.tb >= 7 && score.p1.tb + 1 < score.p2.tb)
-    ) {
+    if (isTbWinner) {
       scoreGame(winner);
       setIndex += 1;
       winner.setsWon += 1;
@@ -87,12 +97,7 @@
   };
 
   const scoreSet = (winner) => {
-    if (
-      (score.p1.sets[setIndex] >= 6 &&
-        score.p1.sets[setIndex] - score.p2.sets[setIndex] >= 2) ||
-      (score.p2.sets[setIndex] >= 6 &&
-        score.p2.sets[setIndex] - score.p1.sets[setIndex] >= 2)
-    ) {
+    if (isSetWinner()) {
       setIndex += 1;
       winner.setsWon += 1;
     }
