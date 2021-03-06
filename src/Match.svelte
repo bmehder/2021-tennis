@@ -15,14 +15,14 @@
   const score = {
     p1: {
       name: player1,
-      sets: [0, 0, 0],
+      sets: [5, 0, 0],
       pt: 0,
       tb: 0,
       setsWon: 0,
     },
     p2: {
       name: player2,
-      sets: [0, 0, 0],
+      sets: [5, 0, 0],
       pt: 0,
       tb: 0,
       setsWon: 0,
@@ -41,6 +41,31 @@
   $: isTiebreak = score.p1.sets[i] === 6 && score.p2.sets[i] === 6; // i === setNumber
 
   $: isMatchOver = score.p1.setsWon > 1 || score.p2.setsWon > 1;
+
+  $: isHighSetScore = (currentSet, player) => {
+    if (currentSet === setNumber) return;
+    if (player === "p1") {
+      if (score.p1.sets[currentSet] > score.p2.sets[currentSet]) {
+        return true;
+      }
+    } else {
+      if (score.p2.sets[currentSet] > score.p1.sets[currentSet]) {
+        return true;
+      }
+    }
+  };
+
+  $: isHighGameScore = (player) => {
+    if (player === "p1") {
+      if (score.p1.pt === 0) return;
+      if (score.p1.pt >= score.p2.pt) return true;
+      if (score.p1.pt === "Ad") return true;
+    } else {
+      if (score.p2.pt === 0) return;
+      if (score.p2.pt >= score.p1.pt) return true;
+      if (score.p2.pt === "Ad") return true;
+    }
+  };
 
   /**
    * STATE PREDICATES
@@ -150,20 +175,6 @@
    * OPTIONALLY PERSIST DATA BY SUBMITTING THE STATE TO AN API OR...
    */
   const handleSubmit = () => alert(JSON.stringify(score));
-
-  $: isHighSetScore = (currentSet, player) => {
-    if (currentSet !== setNumber) {
-      if (player === "p1") {
-        if (score.p1.sets[currentSet] > score.p2.sets[currentSet]) {
-          return true;
-        }
-      } else {
-        if (score.p2.sets[currentSet] > score.p1.sets[currentSet]) {
-          return true;
-        }
-      }
-    }
-  };
 </script>
 
 <section class:flat>
@@ -192,8 +203,7 @@
           bind:value={score.p1.sets[2]}
         />
         <input
-          class:winner={score.p1.pt !== 0 &&
-            (score.p1.pt >= score.p2.pt || score.p1.pt === "Ad")}
+          class:winner={isHighGameScore("p1")}
           bind:value={score.p1.pt}
           readonly
         />
@@ -214,8 +224,7 @@
           bind:value={score.p2.sets[2]}
         />
         <input
-          class:winner={score.p2.pt !== 0 &&
-            (score.p2.pt >= score.p1.pt || score.p2.pt === "Ad")}
+          class:winner={isHighGameScore("p2")}
           bind:value={score.p2.pt}
           readonly
         />
