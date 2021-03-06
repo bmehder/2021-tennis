@@ -1,6 +1,11 @@
 <script>
+  /**
+   * COMPONENT PROPS
+   */
+
   export let player1 = "Player 1";
   export let player2 = "Player 2";
+  export let flat = false; // box-shadow?
 
   /**
    * STATE
@@ -24,25 +29,22 @@
     setIndex: 0,
   };
 
-  let setNumber = score.setIndex; // alias to score obj property
-
   /**
-   * REACTIVE STATE LISTENERS (RSLs™)
+   * REACTIVE STATE PREDICATES (RSPs™)
    */
 
   $: isDeuce = score.p1.pt === 40 && score.p2.pt === 40;
 
   $: isAd = score.p1.pt === "Ad" || score.p2.pt === "Ad";
 
-  $: isTiebreak =
-    score.p1.sets[setNumber] === 6 && score.p2.sets[setNumber] === 6;
+  $: isTiebreak = score.p1.sets[i] === 6 && score.p2.sets[i] === 6;
 
   $: isMatchOver = score.p1.setsWon > 1 || score.p2.setsWon > 1;
 
   /**
    * STATE PREDICATES
    *
-   * Need to be called at specific times
+   * Need to be called at specific times - can't be reactive 🥲
    */
 
   const isTiebreakOver = () => {
@@ -97,6 +99,9 @@
   const scoreGame = (winner) =>
     (winner.sets[setNumber] = +winner.sets[setNumber] + 1);
 
+  const scoreSet = (winner) =>
+    isSetOver() && (setNumber += 1) && (winner.setsWon += 1);
+
   const scoreTiebreak = (winner) => {
     winner.tb += 1;
     if (isTiebreakOver()) {
@@ -107,10 +112,10 @@
     }
   };
 
-  const scoreSet = (winner) =>
-    isSetOver() && (setNumber += 1) && (winner.setsWon += 1);
+  /**
+   * HELPER FUNCTION & ALIASES
+   */
 
-  // Utitlity function
   const resetPoints = () => {
     score.p1.pt = 0;
     score.p2.pt = 0;
@@ -118,8 +123,13 @@
     score.p2.tb = 0;
   };
 
+  // Aliases for a score obj prop
+  // It makes code using these more clear and shorter
+  let setNumber = score.setIndex;
+  let i = setNumber;
+
   /**
-   * BUTTON CLICK EVENT HANDLERS
+   * BUTTON CLICK EVENT HANDLER (CONTROLLER)
    */
 
   const handleBtnClick = (winner) => {
@@ -132,14 +142,17 @@
     } else {
       scoreNormalPoint(winner);
     }
-    score = score;
+    score = score; // Reactively refresh the score
     scoreSet(winner);
   };
 
+  /**
+   * OPTIONALLY PERSIST DATA BY SUBMITTING THE STATE TO AN API OR...
+   */
   const handleSubmit = () => alert(JSON.stringify(score));
 </script>
 
-<section>
+<section class:flat>
   {#if !isTiebreak}
     <form>
       <div>
@@ -298,6 +311,9 @@
   }
   .winner {
     font-weight: bold;
+  }
+  .flat {
+    box-shadow: none;
   }
   @media screen and (max-width: 767px) {
     section {
