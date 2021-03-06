@@ -6,6 +6,7 @@
   export let player1 = "Player 1";
   export let player2 = "Player 2";
   export let flat = false; // box-shadow?
+  export let color = "dodgerblue"; // the app theme color
 
   /**
    * STATE
@@ -155,7 +156,7 @@
 <section class:flat>
   {#if !isTiebreak}
     <form>
-      <div>
+      <div style="background:{color};">
         <span>Player</span>
         <span>1</span>
         <span>2</span>
@@ -216,11 +217,19 @@
 
   {#if !isMatchOver}
     <div>
-      <button on:click={() => handleBtnClick(score.p1)}>Player 1</button>
-      <button on:click={() => handleBtnClick(score.p2)}>Player 2</button>
+      <button
+        style="background:{color}"
+        on:click={() => handleBtnClick(score.p1)}>Player 1</button
+      >
+      <button
+        style="background:{color}"
+        on:click={() => handleBtnClick(score.p2)}>Player 2</button
+      >
     </div>
   {:else}
-    <button on:click={handleSubmit}>Submit Match</button>
+    <button style="background:{color}" on:click={handleSubmit}
+      >Submit Match</button
+    >
   {/if}
 </section>
 
@@ -255,7 +264,6 @@
   }
   form {
     margin-top: 1.5em;
-    /* border: 1px solid #ddd; */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   form div {
@@ -265,7 +273,7 @@
   }
   form div:nth-child(1) {
     padding: 1em 0;
-    background-color: dodgerblue;
+    /* background-color: dodgerblue; */
     color: white;
   }
   form div:nth-child(2) input {
@@ -296,7 +304,7 @@
   button {
     margin: 1.2em 0.5em;
     padding: 1em 2em;
-    background-color: dodgerblue;
+    /* background-color: dodgerblue; */
     color: white;
     font-weight: bold;
     border-radius: 0.25em;
