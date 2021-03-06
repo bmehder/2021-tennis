@@ -38,9 +38,8 @@
 
   $: isAd = score.p1.pt === "Ad" || score.p2.pt === "Ad";
 
-  $: isTiebreak = score.p1.sets[i] === 6 && score.p2.sets[i] === 6; // i === setNumber
-
-  $: isMatchOver = score.p1.setsWon > 1 || score.p2.setsWon > 1;
+  $: isTiebreak =
+    score.p1.sets[setNumber] === 6 && score.p2.sets[setNumber] === 6;
 
   $: isHighSetScore = (currentSet, player) => {
     if (currentSet === setNumber) return;
@@ -56,16 +55,14 @@
   };
 
   $: isHighGameScore = (player) => {
-    if (player === "p1") {
-      if (score.p1.pt === 0) return;
-      if (score.p1.pt >= score.p2.pt) return true;
-      if (score.p1.pt === "Ad") return true;
-    } else {
-      if (score.p2.pt === 0) return;
-      if (score.p2.pt >= score.p1.pt) return true;
-      if (score.p2.pt === "Ad") return true;
+    if (!isMatchOver) {
+      if (player === "p1" && score.p1.pt >= score.p2.pt) return true;
+      if (player === "p2" && score.p2.pt >= score.p1.pt) return true;
+      if (score.p1.pt === "Ad" || score.p2.pt === "Ad") return true;
     }
   };
+
+  $: isMatchOver = score.p1.setsWon > 1 || score.p2.setsWon > 1;
 
   /**
    * STATE PREDICATES
@@ -122,7 +119,8 @@
    * FUNCTIONS TO SCORE GAMES, SETS, & TIEBREAKS
    */
 
-  const scoreGame = (winner) => (winner.sets[i] = +winner.sets[i] + 1);
+  const scoreGame = (winner) =>
+    (winner.sets[setNumber] = +winner.sets[setNumber] + 1);
 
   const scoreSet = (winner) =>
     isSetOver() && (setNumber += 1) && (winner.setsWon += 1);
@@ -138,7 +136,7 @@
   };
 
   /**
-   * HELPER FUNCTION & ALIASES
+   * HELPER FUNCTION & ALIAS
    */
 
   const resetPoints = () => {
@@ -148,10 +146,7 @@
     score.p2.tb = 0;
   };
 
-  // Aliases for a score obj prop
-  // It makes code using these more clear and shorter
   let setNumber = score.setIndex;
-  $: i = setNumber; // double alias
 
   /**
    * BUTTON CLICK EVENT HANDLER (CONTROLLER)
@@ -192,16 +187,19 @@
         <input bind:value={score.p1.name} />
         <input
           class:winner={isHighSetScore(0, "p1")}
+          class:loser={setNumber >= 1 && !isHighSetScore(0, "p1")}
           bind:value={score.p1.sets[0]}
           readonly
         />
         <input
           class:winner={isHighSetScore(1, "p1")}
+          class:loser={setNumber >= 2 && !isHighSetScore(1, "p1")}
           bind:value={score.p1.sets[1]}
           readonly
         />
         <input
           class:winner={isHighSetScore(2, "p1")}
+          class:loser={setNumber >= 3 && !isHighSetScore(2, "p1")}
           bind:value={score.p1.sets[2]}
           readonly
         />
@@ -216,16 +214,19 @@
         <input bind:value={score.p2.name} />
         <input
           class:winner={isHighSetScore(0, "p2")}
+          class:loser={setNumber >= 1 && !isHighSetScore(0, "p2")}
           bind:value={score.p2.sets[0]}
           readonly
         />
         <input
           class:winner={isHighSetScore(1, "p2")}
+          class:loser={setNumber >= 2 && !isHighSetScore(1, "p2")}
           bind:value={score.p2.sets[1]}
           readonly
         />
         <input
           class:winner={isHighSetScore(2, "p2")}
+          class:loser={setNumber >= 3 && !isHighSetScore(2, "p2")}
           bind:value={score.p2.sets[2]}
           readonly
         />
@@ -286,6 +287,7 @@
   }
   aside p {
     font-size: 1.5em;
+    font-weight: bold;
   }
   h3 {
     margin-bottom: 1em;
@@ -347,6 +349,9 @@
   }
   .winner {
     font-weight: bold;
+  }
+  .loser {
+    background-color: #eee;
   }
   .flat {
     box-shadow: none;
