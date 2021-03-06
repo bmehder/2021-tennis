@@ -29,11 +29,14 @@
   $: isTiebreak =
     score.p1.sets[setIndex] === 6 && score.p2.sets[setIndex] === 6;
 
-  $: isTbWinner =
-    (score.p1.tb >= 7 && score.p2.tb + 1 < score.p1.tb) ||
-    (score.p2.tb >= 7 && score.p1.tb + 1 < score.p2.tb);
+  const isTbWon = () => {
+    return (
+      (score.p1.tb >= 7 && score.p2.tb + 1 < score.p1.tb) ||
+      (score.p2.tb >= 7 && score.p1.tb + 1 < score.p2.tb)
+    );
+  };
 
-  const isSetWinner = () => {
+  const isSetWon = () => {
     return (
       (score.p1.sets[setIndex] >= 6 &&
         score.p2.sets[setIndex] + 1 < score.p1.sets[setIndex]) ||
@@ -42,21 +45,7 @@
     );
   };
 
-  $: isMatch = score.p1.setsWon > 1 || score.p2.setsWon > 1 ? false : true;
-
-  const handleBtnClick = (winner) => {
-    if (isTiebreak) {
-      scoreTiebreak(winner);
-    } else if (isAd) {
-      scoreAdPoint(winner);
-    } else if (isDeuce) {
-      scoreDeucePoint(winner);
-    } else {
-      scoreNormalPoint(winner);
-    }
-    score = score;
-    scoreSet(winner);
-  };
+  $: isMatchOver = score.p1.setsWon > 1 || score.p2.setsWon > 1;
 
   const scoreNormalPoint = (winner) => {
     if (winner.pt === 0) {
@@ -78,8 +67,7 @@
       scoreGame(winner);
       resetPoints();
     } else {
-      score.p1.pt = 40;
-      score.p2.pt = 40;
+      winner.pt = 40;
     }
   };
 
@@ -88,7 +76,7 @@
 
   const scoreTiebreak = (winner) => {
     winner.tb += 1;
-    if (isTbWinner) {
+    if (isTbWon()) {
       scoreGame(winner);
       setIndex += 1;
       winner.setsWon += 1;
@@ -97,10 +85,7 @@
   };
 
   const scoreSet = (winner) => {
-    if (isSetWinner()) {
-      setIndex += 1;
-      winner.setsWon += 1;
-    }
+    isSetWon() && (setIndex += 1) && (winner.setsWon += 1);
   };
 
   const resetPoints = () => {
@@ -108,6 +93,20 @@
     score.p2.pt = 0;
     score.p1.tb = 0;
     score.p2.tb = 0;
+  };
+
+  const handleBtnClick = (winner) => {
+    if (isTiebreak) {
+      scoreTiebreak(winner);
+    } else if (isAd) {
+      scoreAdPoint(winner);
+    } else if (isDeuce) {
+      scoreDeucePoint(winner);
+    } else {
+      scoreNormalPoint(winner);
+    }
+    score = score;
+    scoreSet(winner);
   };
 
   const handleSubmit = () => alert(JSON.stringify(score, null, "  "));
@@ -175,7 +174,7 @@
     </aside>
   {/if}
 
-  {#if isMatch}
+  {#if !isMatchOver}
     <div>
       <button on:click={() => handleBtnClick(score.p1)}>Player 1</button>
       <button on:click={() => handleBtnClick(score.p2)}>Player 2</button>
@@ -192,7 +191,7 @@
     justify-content: center;
     align-items: center;
     width: 680px;
-    margin: 2em auto;
+    margin: 2em auto 3em;
     padding: 2em 0;
     background-image: linear-gradient(
       to bottom,
@@ -216,7 +215,8 @@
   }
   form {
     margin-top: 1.5em;
-    border: 1px solid #ddd;
+    /* border: 1px solid #ddd; */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   form div {
     display: grid;
@@ -254,10 +254,12 @@
     font-weight: bold;
   }
   button {
-    margin: 1em 0.5em;
+    margin: 1.2em 0.5em;
     padding: 1em 2em;
     background-color: dodgerblue;
     color: white;
+    border-radius: 0.25em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   .winner {
     font-weight: bold;

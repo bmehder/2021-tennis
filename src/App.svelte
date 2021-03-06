@@ -11,10 +11,8 @@
   <Match />
 
   <p>
-    <small
-      ><a href="https://github.com/bmehder/2021-tennis" target="_blank"
-        >View the GitHub Repo</a
-      ></small
+    <a href="https://github.com/bmehder/2021-tennis" target="_blank"
+      >View the GitHub Repo</a
     >
   </p>
 </main>
