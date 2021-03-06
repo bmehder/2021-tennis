@@ -87,7 +87,7 @@
   };
 
   /**
-   * FUNCTIONS TO SCORE POINTS
+   * FUNCTIONS TO SCORE POINTS, GAMES, TIEBREAKS, AND SETS
    */
 
   const scoreNormalPoint = (winner) => {
@@ -114,10 +114,6 @@
       score.p2.pt = 40;
     }
   };
-
-  /**
-   * FUNCTIONS TO SCORE GAMES, SETS, & TIEBREAKS
-   */
 
   const scoreGame = (winner) =>
     (winner.sets[setNumber] = +winner.sets[setNumber] + 1);
@@ -303,7 +299,6 @@
   }
   form div:nth-child(1) {
     padding: 1em 0;
-    /* background-color: dodgerblue; */
     color: white;
   }
   form div:nth-child(2) input {
@@ -334,7 +329,6 @@
   button {
     margin: 1.2em 0.5em;
     padding: 1em 2em;
-    /* background-color: dodgerblue; */
     color: white;
     font-weight: bold;
     border-radius: 0.25em;
