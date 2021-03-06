@@ -5,7 +5,7 @@
 
   export let player1 = "Player 1";
   export let player2 = "Player 2";
-  export let flat = false; // box-shadow?
+  export let flat = false; // flat or box-shadow (default)?
   export let color = "dodgerblue"; // the app theme color
 
   /**
@@ -38,7 +38,7 @@
 
   $: isAd = score.p1.pt === "Ad" || score.p2.pt === "Ad";
 
-  $: isTiebreak = score.p1.sets[i] === 6 && score.p2.sets[i] === 6;
+  $: isTiebreak = score.p1.sets[i] === 6 && score.p2.sets[i] === 6; // i === setNumber
 
   $: isMatchOver = score.p1.setsWon > 1 || score.p2.setsWon > 1;
 
@@ -97,8 +97,7 @@
    * FUNCTIONS TO SCORE GAMES, SETS, & TIEBREAKS
    */
 
-  const scoreGame = (winner) =>
-    (winner.sets[setNumber] = +winner.sets[setNumber] + 1);
+  const scoreGame = (winner) => (winner.sets[i] = +winner.sets[i] + 1);
 
   const scoreSet = (winner) =>
     isSetOver() && (setNumber += 1) && (winner.setsWon += 1);
@@ -127,7 +126,7 @@
   // Aliases for a score obj prop
   // It makes code using these more clear and shorter
   let setNumber = score.setIndex;
-  let i = setNumber;
+  $: i = setNumber; // double alias
 
   /**
    * BUTTON CLICK EVENT HANDLER (CONTROLLER)
